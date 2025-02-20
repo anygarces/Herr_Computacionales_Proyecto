@@ -17,7 +17,7 @@ int main() {
     const double dt = CFL * dx; // Paso temporal, según la condición CFL
     const int nsteps = 1000;    // Número de pasos temporales
 
-    //Parámetros para propagación en el vacío
+    // Parámetros para propagación en el vacío
     double lambda = 1.0;
     double k = 2 * PI / lambda;
     double d = L;  // distancia de propagación
@@ -27,17 +27,14 @@ int main() {
     vector<double> E_nuevo(NX, 0.0), H_nuevo(NX, 0.0);
 
     // Vectores para almacenar los datos de E y H luego de la simulación
-    // Cada fila corresponde a un instante de tiempo
     vector<vector<double>> E_total(nsteps + 1, vector<double>(NX, 0.0));
     vector<vector<double>> H_total(nsteps + 1, vector<double>(NX, 0.0));
 
     // Condición inicial: pulso gaussiano centrado en L/2 para E
-    // Se asume que la onda está polarizada a 45°, de modo que las componentes físicas son:
-    // Ex = E/sqrt(2) y Ey = E/sqrt(2).
     for (int i = 0; i < NX; i++) {
         double x = i * dx;
-        E[i] = exp(-pow(x - L / 2, 2) / 0.01);  // Pulso gaussiano: Señal que sigue una función gaussiana
-        H[i] = 0.0;                           // Campo magnético inicialmente cero
+        E[i] = exp(-pow(x - L / 2, 2) / 0.01);
+        H[i] = 0.0;
     }
     // Guardamos los valores iniciales para t = 0
     for (int i = 0; i < NX; i++) {
@@ -47,24 +44,29 @@ int main() {
 
     // Lax-Wendroff para las ecuaciones de Maxwell en 1D en el vacío
     // E_t = -H_x   y   H_t = -E_x
+    // Se actualizan solo los puntos internos; en los bordes se imponen condiciones fijas (por ejemplo, campos nulos)
     for (int n = 0; n < nsteps; n++) {
-        for (int i = 0; i < NX; i++) {
-            // Condiciones de frontera periódicas
-            int im1 = (i - 1 + NX) % NX;
-            int ip1 = (i + 1) % NX;
-
-            // Actualización del campo eléctrico E
+        // Actualizamos solo los puntos internos (de 1 a NX-2)
+        for (int i = 1; i < NX - 1; i++) {
+            int im1 = i - 1;
+            int ip1 = i + 1;
+            
             E_nuevo[i] = E[i]
                          - (dt / (2 * dx)) * (H[ip1] - H[im1])
                          + (dt * dt / (2 * dx * dx)) * (E[ip1] - 2 * E[i] + E[im1]);
 
-            // Actualización del campo magnético H
             H_nuevo[i] = H[i]
                          - (dt / (2 * dx)) * (E[ip1] - E[im1])
                          + (dt * dt / (2 * dx * dx)) * (H[ip1] - 2 * H[i] + H[im1]);
         }
 
-        // Se guarda la solución obtenida en este paso temporal
+        // Imponemos condiciones de contorno fijas en los bordes (por ejemplo, E = 0, H = 0)
+        E_nuevo[0] = 0.0;
+        E_nuevo[NX - 1] = 0.0;
+        H_nuevo[0] = 0.0;
+        H_nuevo[NX - 1] = 0.0;
+
+        // Guardamos la solución obtenida en este paso temporal
         for (int i = 0; i < NX; i++) {
             E_total[n + 1][i] = E_nuevo[i];
             H_total[n + 1][i] = H_nuevo[i];
@@ -82,7 +84,7 @@ int main() {
         return 1;
     }
 
-    // Título archivo .txt: Tiempo, X, E, Ex, Ey, H
+    // Título del archivo: Tiempo, X, E, Ex, Ey, H
     archivo << "Tiempo\tX\tE\tEx\tEy\tH\n";
 
     // Se escribe cada instante temporal con cada punto del dominio
