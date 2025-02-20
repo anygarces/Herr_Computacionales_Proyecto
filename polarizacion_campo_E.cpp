@@ -85,7 +85,7 @@ int main() {
     }
 
     // Título del archivo: Tiempo, X, E, Ex, Ey, H
-    archivo << "Tiempo\tX\tE\tEx\tEy\tH\n";
+    archivo << "Tiempo" << " " << "X" << " " << "E" << " " << "Ex" << " " << "Ey" << " " << "H" << endl;
 
     // Se escribe cada instante temporal con cada punto del dominio
     for (int n = 0; n <= nsteps; n++) {
@@ -95,8 +95,8 @@ int main() {
             // Cálculo de las componentes de E en 45° de polarización:
             double Ex = E_total[n][i] / sqrt(2.0);
             double Ey = E_total[n][i] / sqrt(2.0);
-            archivo << t << "\t" << x << "\t" << E_total[n][i] << "\t" 
-                    << Ex << "\t" << Ey << "\t" << H_total[n][i] << "\n";
+            archivo << t << " " << x << " " << E_total[n][i] << " " 
+                    << Ex << " " << Ey << " " << H_total[n][i] << endl;
         }
         archivo << "\n";  // Línea vacía para separar los instantes de tiempo
     }
