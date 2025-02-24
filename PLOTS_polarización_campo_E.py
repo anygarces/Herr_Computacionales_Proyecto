@@ -14,21 +14,6 @@ N_arrays = int(len(data[:,0])/200)
 # Reorganizamiento de los datos en N_arrays matrices de tamaño (200,6)
 data_n = data.reshape(N_arrays, 200, 6)
 
-# Escoger un conjunto de valores aleatorios para ver los datos en tiempor aleatorios
-output_number = 10
-times = np.random.randint(1, 
-                          N_arrays, 
-                          size = output_number)
-
-# Graficación de los tiempos aleatorios
-fig1, axis1 = plt.subplots()
-axis1.plot(data[0:200,1], data[0:200,2], linewidth = 0.5, label = "Estado inicial")
-for i in times:
-    axis1.plot(data_n[i,:,1], data_n[i,:,2], linewidth = 0.5,
-               label=f"t={data_n[i,0,0]}s")
-plt.legend()
-plt.savefig("test.png")
-
 # Animación de la onda
 fig, axis = plt.subplots()
 axis.set_title("Animación - Onda")
@@ -42,7 +27,7 @@ E = [data_n[i,:,2] for i in range(N_arrays)]
 
 # Función de animación (en cada fotograma actualiza la gráfica establecida)
 def update_data(frame):
-    animated_wave.set_data(data_n[i,:,1], E[frame])
+    animated_wave.set_data(data_n[frame,:,1], E[frame])
     return animated_wave
 
 # FuncAnimation con los parámetros necesarios, se usarán 100 fotogramas a un intervalo de 100 ms
