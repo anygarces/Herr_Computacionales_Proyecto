@@ -36,3 +36,10 @@ animation = FuncAnimation(fig = fig,
                           frames = 200, interval = 100)
 animation.save("test_anim2.gif")
 
+
+
+
+
+print(data_n[0,0,2])
+print(np.shape(data_n))
+
