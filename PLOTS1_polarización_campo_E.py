@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 plt.style.use('bmh')
 
 # Extracción de datos
-data = np.genfromtxt("D:\\Sebastian\\Documents\\VSCode\\Herramientas Computacionales\\Proyecto\\Herr_Computacionales_Proyecto\\datos_simulacion1.txt", 
+data = np.genfromtxt("D:\Sebastian\Documents\VSCode\Herramientas Computacionales\Proyecto\Herr_Computacionales_Proyecto\datos_simulacion1.txt", 
                      delimiter=" ",
                      skip_header=1)
 
@@ -37,6 +37,11 @@ animation = FuncAnimation(fig = fig,
 animation.save("test_anim1.gif")
 
 
+
+
+
+print(data_n[0,0,2])
+print(np.shape(data_n))
 
 
 
