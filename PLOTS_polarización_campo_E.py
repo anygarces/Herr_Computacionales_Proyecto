@@ -15,12 +15,12 @@ N_arrays = int(len(data[:,0])/200)
 data_n = data.reshape(N_arrays, 200, 6)
 
 # Animación de la onda
-fig, axis = plt.subplots()
-axis.set_title("Animación - Onda")
-axis.set_xlim([min(data_n[0,:,1]), max(data_n[0,:,1])])
-axis.set_ylim([-1.2, 1.2])
+fig, ax = plt.subplots()
+ax.set_title("Animación - Onda")
+ax.set_xlim([min(data_n[0,:,1]), max(data_n[0,:,1])])
+ax.set_ylim([-0.05, 1.05])
 # Creación de la gráfica que se actualizará en cada fotograma
-animated_wave, = axis.plot(data_n[0,:,1], data_n[0,:,2], linewidth = 0.5)
+animated_wave, = ax.plot(data_n[0,:,1], data_n[0,:,2], linewidth = 0.5)
 
 # Creación del arreglo que guardará los datos a gráficar de interés (Campo E.)
 E = [data_n[i,:,2] for i in range(N_arrays)]
@@ -33,8 +33,10 @@ def update_data(frame):
 # FuncAnimation con los parámetros necesarios, se usarán 100 fotogramas a un intervalo de 100 ms
 animation = FuncAnimation(fig = fig, 
                           func = update_data, 
-                          frames = 100, interval = 100)
+                          frames = 200, interval = 100)
 animation.save("test_anim.gif")
+
+
 
 
 
