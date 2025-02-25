@@ -1,11 +1,18 @@
-phony : test_anim.gif
+phony : test_anim1.gif test_anim2.gif
 
-test_anim.gif : PLOTS_polarizacion_campo_E.py datos_simulacion.txt
-	py PLOTS_polarizacion_campo_E.py 
+test_anim1.gif : PLOTS1_polarizacion_campo_E.py datos_simulacion1.txt
+	py PLOTS1_polarizacion_campo_E.py 
 
-datos_simulacion.txt : polarizacion_campo_E.cpp 
-	g++ polarizacion_campo_E.cpp -o wave.x
-	.\wave.x
+datos_simulacion1.txt : polarizacion_campo_E.cpp 
+	g++ polarizacion_campo_E.cpp -o wave1.x
+	.\wave1.x
+
+test_anim2.gif : PLOTS2_polarizacion_campo_E.py datos_simulacion2.txt
+	py PLOTS2_polarizacion_campo_E.py 
+
+datos_simulacion2.txt : polarizacion_campo_E.cpp 
+	g++ E_wave.cpp -o wave2.x
+	.\wave2.x
 
 clean :
 	del *.txt *.x *.gif *.png
