@@ -1,4 +1,3 @@
-//Polarización del campo eléctrico en el vacío
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -12,14 +11,14 @@ const double PI = 3.1416;
 
 // Parámetros para propagación en el vacío
 double lambda = 1.0;
-double c = 3.0e8;
+double c = 50.0;
 double k = 2 * PI / lambda;
 
 const int NX = 200;         // Número de puntos en el espacio
 const double L = 1.0;       // Longitud del dominio
 const double dx = L / (NX-1);   // Paso espacial (h)
-const double CFL = 0.5;     // Condición de estabilidad
-const double dt = CFL * dx/c; // Paso temporal, según la condición CFL
+const double dt = 0.0001; // Paso temporal, según la condición CFL
+const double CFL = (c*dt)/dx;     // Condición de estabilidad
 const int nsteps = 1000;    // Número de pasos temporales
 
 // Condición inicial: pulso gaussiano centrado en L/2 para E
@@ -66,9 +65,24 @@ int main() {
     // Se actualizan solo los puntos internos; en los bordes se imponen condiciones fijas (por ejemplo, campos nulos)
     
     for (int n = 0; n < nsteps; n++) {
-        // Imponemos condiciones de contorno periodicas
-        E_nuevo[0] = E_nuevo[NX - 2];
-        E_nuevo[NX - 1] = E_nuevo[1];
+        // Imponemos condiciones de contorno periodicas, fijas o de flujo exclusivo en la frontera derecha:
+        
+        // Periodicas
+
+        // E_nuevo[0] = E_nuevo[NX - 2];
+        // E_nuevo[NX - 1] = E_nuevo[1];
+
+        // Fijas 
+
+        // E_nuevo[0] = 0;
+        // E_nuevo[NX - 1] =0;
+        
+        // Flujo exclusivo hacia la derecha
+
+        E_nuevo[0] = 0;
+        E_nuevo[NX - 1] = E_nuevo[NX-1] = E[NX-1] - (c*dt/dx) * (E[NX-1] - E[NX-2])
+                   + (pow(c*dt, 2) / (2 * pow(dx, 2))) * (E[NX-1] - 2*E[NX-2] + E[NX-3]);;
+        
         for (int i = 1; i < NX - 1 ; i++) {
             
             E_nuevo[i] = E[i] 
