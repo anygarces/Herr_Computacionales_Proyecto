@@ -16,11 +16,13 @@ data_n = data.reshape(N_arrays, 200, 3)
 
 # Animación de la onda
 fig, ax = plt.subplots()
-ax.set_title("Animación - Onda")
+ax.set_title("Animación - Advección")
+ax.set_xlabel("x")
+ax.set_ylabel("u(x,t)")
 ax.set_xlim([0,1])
 #ax.set_ylim([-1.2, 1.2])
 #Creación de la gráfica que se actualizará en cada fotograma
-animated_wave, = ax.plot(data_n[0,:,1], data_n[0,:,2], linewidth = 0.5)
+animated_wave, = ax.plot(data_n[0,:,1], data_n[0,:,2], linewidth = 1.5)
 
 # Creación del arreglo que guardará los datos a gráficar de interés (Campo E.)
 E = [data_n[i,:,2] for i in range(N_arrays)]
@@ -36,7 +38,3 @@ animation = FuncAnimation(fig = fig,
                           frames = 300,
                           interval = 10)
 animation.save("Advection_simulation.gif")
-
-
-#print(np.shape(data_n))
-
