@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+plt.style.use('bmh')
 
 def read_wave_data(filename):
     """
@@ -46,15 +47,55 @@ def main():
     x = np.linspace(x_min, x_max, NX)
 
     # Leer los datos del archivo
-    filename = "wave_data.txt"
-    frames = read_wave_data(filename)
-    nframes = len(frames)
-    print(f"Se han leído {nframes} frames desde '{filename}'.")
+    
+    CFE = [0.1, 0.3, 0.5, 0.7]
+    frames_cfe = []
+
+    filename1 = f"wave_data_0.100000.txt"
+    frames1 = read_wave_data(filename1)
+    frames_cfe.append(frames1)
+    nframes1 = len(frames1)
+    print(f"Se han leído {nframes1} frames desde '{filename1}'.")
+
+    filename2 = f"wave_data_0.300000.txt"
+    frames2 = read_wave_data(filename2)
+    frames_cfe.append(frames2)
+    nframes2 = len(frames2)
+    print(f"Se han leído {nframes2} frames desde '{filename2}'.")
+
+    filename3 = f"wave_data_0.500000.txt"
+    frames3 = read_wave_data(filename3)
+    frames_cfe.append(frames3)
+    nframes3 = len(frames3)
+    print(f"Se han leído {nframes3} frames desde '{filename3}'.")
+
+    filename4 = f"wave_data_0.700000.txt"
+    frames4 = read_wave_data(filename4)
+    frames_cfe.append(frames4)
+    nframes4 = len(frames4)
+    print(f"Se han leído {nframes4} frames desde '{filename4}'.")
 
     # Configurar figura y ejes
     fig, ax = plt.subplots()
-    # Graficar la primera solución
-    line, = ax.plot(x, frames[0], 'b-', lw=2)
+    
+    # Crear lista con los gráficos de cada valor de CFE
+
+    # Elegir entre crear gráficas para todos los valores de CFE o sólo para uno en específico
+
+    # Para graficarlos todos
+
+    #lines = []
+    #for j, cfe in enumerate(CFE):
+    #    line, = ax.plot(x, frames_cfe[j][0], lw=2, label=f"cfe = {cfe}")
+    #    lines.append(line)
+    #    ax.legend()
+
+    # Para analizar un valor en específico
+
+    k = 2
+
+    line, = ax.plot(x, frames_cfe[k][0], lw=2, label=f"cfe = {CFE[2]}")
+    ax.legend(loc = 'best')
     ax.set_xlim(x_min, x_max)
     # Ajustar los límites verticales según la amplitud esperada
     ax.set_ylim(-1.2, 1.2)
@@ -62,16 +103,21 @@ def main():
     ax.set_ylabel("u(x,t)")
     ax.set_title("Ecuación de Onda 1D - Lax–Wendroff")
 
+    #ax.plot(x, frames[100])
+
     # Función de actualización para cada frame
     def animate(i):
-        line.set_ydata(frames[i])
+        #for j, line in pairs:
+        #    line.set_ydata(frames_cfe[j][i])
+        #    ax.set_title(f"Ecuación de Onda 1D - Frame {i}")
+        line.set_ydata(frames_cfe[k][i])
         ax.set_title(f"Ecuación de Onda 1D - Frame {i}")
-        return line,
+        return [line]
 
     # Crear la animación
     anim = animation.FuncAnimation(fig, 
                                    animate, 
-                                   frames=350, 
+                                   frames=nframes1, 
                                    interval=50, 
                                    blit=True)
 
