@@ -36,11 +36,11 @@ int main() {
     const double x0    = -50.0; // centro inicial del pulso
     const double sigma = 10.0;  // anchura del pulso
 
-    // Condiciones de frontera (fixed == true para fronteras fijas, fixed == false para fronteras periodicas)
+    // Condiciones de frontera (fixed == 1 para fronteras fijas, fixed == 0 para fronteras periodicas)
 
-    bool fijas;
+    int fijas;
 
-    cout << "Fronteras fijas (true) o periodicas (false)" << endl;
+    cout << "Fronteras fijas (1) o periodicas (0)" << endl;
     cin >> fijas;
 
     for (int i=0; i<5; i++){
@@ -122,12 +122,12 @@ int main() {
             // Condiciones de contorno (Dirichlet = 0)
             // En las zonas donde no se aplica el esquema (j < 2 o j >= NX-2), fijamos 0
             
-            if (fijas == true){
+            if (fijas == 1){
                 u_next[0]      = 0;
                 u_next[NX-1]   = 0;
                 u_next[1]      = 0;
                 u_next[NX-2]   = 0;
-            } else if (fijas == false){
+            } else if (fijas == 0){
                 u_next[0]      = u_next[NX-4];
                 u_next[NX-1]   = u_next[3];
                 u_next[1]      = u_next[NX-3];
